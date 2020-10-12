@@ -19,7 +19,10 @@ function render() {
             <div class="logo">${node.logo}</div>
             <div class="link">${simplifyUrl(node.url)}</div>
             <svg class="icon close">
-                 <use xlink:href="#icon-close"></use>
+                 <use xlink:href="#icon-delete2"></use>
+            </svg>
+            <svg class="icon setting">
+                 <use xlink:href="#icon-setting1"></use>
             </svg>
         </div>
 </li>`).insertBefore($('.last'));
@@ -30,14 +33,24 @@ function render() {
             e.stopPropagation(); //阻止冒泡，即阻止点击close触发li的点击事件
             hashMap.splice(index, 1);
             render();
+        });
+        $li.on('click', '.setting', e => {
+            e.stopPropagation(); //阻止冒泡，即阻止点击close触发li的点击事件
+            let logo = window.prompt("你要将标志修改为什么？(只能输入一个字符)")
+            if (logo.length !== 1) {
+                window.alert("你只能输入一个字符")
+            } else {
+                hashMap[index].logo = logo.toUpperCase();
+            }
+            render();
         })
     })
 }
 
 render();
 
-$('.addButton').on('click', () => {
-    let url = window.prompt("你要增加的网站是什么？")
+function addWebsite() {
+    let url = window.prompt("你要增加的网站是什么？(请务必输入顶级域名，如 baidu.com)")
     if (url.indexOf('http') !== 0) {
         url = 'https://' + url;
     }
@@ -47,7 +60,9 @@ $('.addButton').on('click', () => {
         url: url
     });
     render();
-})
+}
+
+$('.addButton').on('click', addWebsite)
 
 window.onbeforeunload = function () {
     let string = JSON.stringify(hashMap);
@@ -62,5 +77,8 @@ $(document).on('keypress', e => { //经验上讲，监听document比较好
         if (hashMap[i].logo.toLowerCase() === key) {
             window.open(hashMap[i].url)
         }
+    }
+    if (key === "+") {
+        addWebsite()
     }
 })

@@ -133,12 +133,31 @@ body {
     right: 0px;
     font-size: 16px !important;
     color: rgba(110, 108, 108, 0.192);
-    display: none;
+    display: block;
     cursor: default;
 }
 
-.siteList .site:hover .close {
+.siteList .site .setting {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    font-size: 16px !important;
+    color: rgba(110, 108, 108, 0.192);
     display: block;
+    cursor: default;
+}
+
+@media (min-width:500px) {
+
+    .siteList .site .close,
+    .siteList .site .setting {
+        display: none;
+    }
+
+    .siteList .site:hover .close,
+    .siteList .site:hover .setting {
+        display: block;
+    }
 }
 
 .siteList .site .logo {
@@ -172,4 +191,20 @@ body {
     font-size: 12px;
 }
 
-/*# sourceMappingURL=style.482364b4.css.map */
+footer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(15, 14, 14, 0.192);
+    font-size: 12px;
+    display: none;
+}
+
+@media (min-width:500px) {
+    footer {
+        display: block;
+    }
+}
+
+/*# sourceMappingURL=style.7a4aecdc.css.map */

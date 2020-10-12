@@ -134,7 +134,7 @@ var simplifyUrl = function simplifyUrl(url) {
 function render() {
   $('.siteList>li:not(.last)').remove();
   hashMap.forEach(function (node, index) {
-    var $li = $(" <li>\n        <div class=\"site\">\n            <div class=\"logo\">".concat(node.logo, "</div>\n            <div class=\"link\">").concat(simplifyUrl(node.url), "</div>\n            <svg class=\"icon close\">\n                 <use xlink:href=\"#icon-close\"></use>\n            </svg>\n        </div>\n</li>")).insertBefore($('.last'));
+    var $li = $(" <li>\n        <div class=\"site\">\n            <div class=\"logo\">".concat(node.logo, "</div>\n            <div class=\"link\">").concat(simplifyUrl(node.url), "</div>\n            <svg class=\"icon close\">\n                 <use xlink:href=\"#icon-delete2\"></use>\n            </svg>\n            <svg class=\"icon setting\">\n                 <use xlink:href=\"#icon-setting1\"></use>\n            </svg>\n        </div>\n</li>")).insertBefore($('.last'));
     $li.on('click', function () {
       window.open(node.url); //直接使用a标签进行跳转的话会将close的点击事件覆盖，即使通过阻止冒泡的方式也不行
     });
@@ -144,12 +144,26 @@ function render() {
       hashMap.splice(index, 1);
       render();
     });
+    $li.on('click', '.setting', function (e) {
+      e.stopPropagation(); //阻止冒泡，即阻止点击close触发li的点击事件
+
+      var logo = window.prompt("你要将标志修改为什么？(只能输入一个字符)");
+
+      if (logo.length !== 1) {
+        window.alert("你只能输入一个字符");
+      } else {
+        hashMap[index].logo = logo.toUpperCase();
+      }
+
+      render();
+    });
   });
 }
 
 render();
-$('.addButton').on('click', function () {
-  var url = window.prompt("你要增加的网站是什么？");
+
+function addWebsite() {
+  var url = window.prompt("你要增加的网站是什么？(请务必输入顶级域名，如 baidu.com)");
 
   if (url.indexOf('http') !== 0) {
     url = 'https://' + url;
@@ -161,7 +175,9 @@ $('.addButton').on('click', function () {
     url: url
   });
   render();
-});
+}
+
+$('.addButton').on('click', addWebsite);
 
 window.onbeforeunload = function () {
   var string = JSON.stringify(hashMap);
@@ -177,6 +193,10 @@ $(document).on('keypress', function (e) {
       window.open(hashMap[i].url);
     }
   }
+
+  if (key === "+") {
+    addWebsite();
+  }
 });
 },{}]},{},["epB2"], null)
-//# sourceMappingURL=main.26e8bbff.js.map
+//# sourceMappingURL=main.78b655d3.js.map
